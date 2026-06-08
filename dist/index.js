@@ -2192,8 +2192,9 @@ function readInputs(env = process.env) {
   };
 }
 function input(env, name) {
-  const key = `INPUT_${name.replace(/ /g, "_").replace(/-/g, "_").toUpperCase()}`;
-  return (env[key] ?? "").trim();
+  const githubKey = `INPUT_${name.replace(/ /g, "_").toUpperCase()}`;
+  const legacyKey = `INPUT_${name.replace(/ /g, "_").replace(/-/g, "_").toUpperCase()}`;
+  return (env[githubKey] ?? env[legacyKey] ?? "").trim();
 }
 function parseSeverity(value) {
   if (value === "info" || value === "warn" || value === "block") return value;
