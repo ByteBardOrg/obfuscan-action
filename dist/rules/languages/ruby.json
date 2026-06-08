@@ -1,0 +1,119 @@
+{
+  "id": "ruby",
+  "aliases": ["rb"],
+  "extensions": [".rb", ".rake", ".gemspec", ".ru"],
+  "filenames": ["Rakefile", "Gemfile", "Capfile"],
+
+  "dynamic_exec_sinks": [
+    "eval",
+    "instance_eval",
+    "class_eval",
+    "module_eval",
+    "binding.eval",
+    "Kernel.eval",
+    "send",
+    "public_send",
+    "__send__",
+    "method",
+    "define_method",
+    "Object.const_get",
+    "Module.const_get",
+    "Class.new"
+  ],
+
+  "decoders": [
+    "Base64.decode64",
+    "Base64.urlsafe_decode64",
+    "Base64.strict_decode64",
+    "Zlib::Inflate.inflate",
+    "Zlib::GzipReader.new",
+    "OpenSSL::Cipher.new",
+    "URI.decode_www_form_component",
+    "CGI.unescape",
+    "[].pack",
+    "String#unpack",
+    "String#unpack1"
+  ],
+
+  "deserializers": [
+    "Marshal.load",
+    "Marshal.restore",
+    "YAML.load",
+    "YAML.unsafe_load",
+    "Psych.load",
+    "Psych.unsafe_load",
+    "Oj.load"
+  ],
+
+  "network_io": [
+    "Net::HTTP.get",
+    "Net::HTTP.post",
+    "Net::HTTP.start",
+    "Net::HTTP::Get",
+    "Net::HTTP::Post",
+    "open-uri.open",
+    "Kernel.open",
+    "URI.open",
+    "HTTParty.get",
+    "HTTParty.post",
+    "RestClient.get",
+    "RestClient.post",
+    "Faraday.get",
+    "Faraday.post",
+    "TCPSocket.new",
+    "Socket.tcp"
+  ],
+
+  "secrets_io": [
+    "ENV",
+    "ENV.fetch",
+    "Etc.getlogin",
+    "Etc.getpwuid",
+    "File.read"
+  ],
+
+  "shell_exec": [
+    "Kernel.system",
+    "system",
+    "Kernel.exec",
+    "exec",
+    "Kernel.spawn",
+    "spawn",
+    "Process.spawn",
+    "IO.popen",
+    "Open3.capture2",
+    "Open3.capture3",
+    "Open3.popen3",
+    "`",
+    "%x"
+  ],
+
+  "library_load": [
+    "Kernel.require",
+    "require",
+    "require_relative",
+    "load",
+    "autoload",
+    "Fiddle.dlopen"
+  ],
+
+  "obfuscator_id_patterns": [
+    "^_+[0-9]+$",
+    "^[Il1O0]{4,}$"
+  ],
+  "min_mean_identifier_length": 2.0,
+  "obfuscator_id_min_ratio": 0.2,
+
+  "string_concat_operators": ["+", "<<", "%"],
+
+  "language_specific_detectors": [
+    "ruby.gemspec-shell-out",
+    "ruby.send-with-dynamic-method",
+    "ruby.kernel-open-network",
+    "ruby.marshal-load-untrusted"
+  ],
+
+  "manifests": ["gemfile", "gemspec"],
+
+  "notes": "Ruby's Kernel#open historically had a security gap where `open(\"|cmd\")` would shell out — relevant for older codebases. send/public_send with attacker-controlled method names is the canonical Ruby RCE pattern."
+}

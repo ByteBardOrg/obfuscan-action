@@ -1,0 +1,66 @@
+{
+  "id": "vbscript",
+  "aliases": ["vbs", "wsh"],
+  "extensions": [".vbs", ".vbe", ".wsf", ".hta"],
+
+  "dynamic_exec_sinks": [
+    "Execute",
+    "ExecuteGlobal",
+    "Eval",
+    "GetRef",
+    "CreateObject.MSScriptControl.ScriptControl",
+    "CreateObject.WScript.Shell",
+    "CreateObject.Shell.Application",
+    "CreateObject.WScript.Network"
+  ],
+
+  "decoders": [
+    "Chr",
+    "ChrW",
+    "Hex",
+    "CreateObject.MSXML2.DOMDocument.createElement",
+    "CreateObject.System.Text.UTF8Encoding"
+  ],
+
+  "deserializers": [],
+
+  "network_io": [
+    "CreateObject.MSXML2.XMLHTTP",
+    "CreateObject.MSXML2.ServerXMLHTTP",
+    "CreateObject.WinHttp.WinHttpRequest.5.1",
+    "CreateObject.Microsoft.XMLHTTP"
+  ],
+
+  "secrets_io": [
+    "WScript.Shell.Environment",
+    "CreateObject.Scripting.FileSystemObject"
+  ],
+
+  "shell_exec": [
+    "WScript.Shell.Run",
+    "WScript.Shell.Exec",
+    "Shell.Application.ShellExecute"
+  ],
+
+  "library_load": [
+    "GetObject",
+    "CreateObject"
+  ],
+
+  "obfuscator_id_patterns": [
+    "^[Il1O0]{4,}$"
+  ],
+  "min_mean_identifier_length": 2.0,
+  "obfuscator_id_min_ratio": 0.25,
+
+  "string_concat_operators": ["&"],
+
+  "language_specific_detectors": [
+    "vbscript.execute-decoded-string",
+    "vbscript.scriptcontrol-eval"
+  ],
+
+  "manifests": [],
+
+  "notes": "VBScript persists in Windows malware droppers despite Microsoft's deprecation roadmap. .hta files are the most dangerous variant because they run with full trust by default."
+}

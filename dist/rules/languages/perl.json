@@ -1,0 +1,76 @@
+{
+  "id": "perl",
+  "aliases": ["pl"],
+  "extensions": [".pl", ".pm", ".t"],
+
+  "dynamic_exec_sinks": [
+    "eval",
+    "do",
+    "require",
+    "use"
+  ],
+
+  "decoders": [
+    "MIME::Base64::decode_base64",
+    "MIME::Base64::decode",
+    "pack",
+    "unpack",
+    "Compress::Zlib::memGunzip",
+    "Compress::Zlib::uncompress",
+    "Crypt::CBC.decrypt",
+    "URI::Escape::uri_unescape"
+  ],
+
+  "deserializers": [
+    "Storable::thaw",
+    "YAML::Load",
+    "YAML::XS::Load"
+  ],
+
+  "network_io": [
+    "LWP::UserAgent.get",
+    "LWP::UserAgent.post",
+    "LWP::Simple::get",
+    "HTTP::Tiny.get",
+    "Net::HTTP",
+    "IO::Socket::INET",
+    "IO::Socket::SSL"
+  ],
+
+  "secrets_io": [
+    "%ENV",
+    "$ENV"
+  ],
+
+  "shell_exec": [
+    "system",
+    "exec",
+    "qx",
+    "open",
+    "fork",
+    "IPC::Open3"
+  ],
+
+  "library_load": [
+    "DynaLoader::dl_load_file",
+    "XSLoader::load"
+  ],
+
+  "obfuscator_id_patterns": [
+    "^\\$_+[0-9]+$",
+    "^\\$[Il1O0]{3,}$"
+  ],
+  "min_mean_identifier_length": 2.0,
+  "obfuscator_id_min_ratio": 0.25,
+
+  "string_concat_operators": [".", ".="],
+
+  "language_specific_detectors": [
+    "perl.open-pipe-shell",
+    "perl.eval-string-arg"
+  ],
+
+  "manifests": ["cpanfile", "makefile-pl"],
+
+  "notes": "Perl's open() with a trailing pipe (`open(F, \"cmd|\")`) shells out — a classic Perl RCE primitive. eval BLOCK is safe; eval EXPR with a string is the dangerous form."
+}

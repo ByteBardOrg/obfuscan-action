@@ -1,0 +1,73 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Obfuscation/backdoor detection config",
+  "description": "Per-language config consumed by generic Layer-B detectors. Adding a language means adding one of these files; no detector code changes are required.",
+  "type": "object",
+  "required": ["id", "extensions", "dynamic_exec_sinks", "decoders"],
+  "additionalProperties": false,
+  "properties": {
+    "id":         { "type": "string", "description": "tree-sitter grammar id, e.g. 'python', 'powershell'." },
+    "aliases":    { "type": "array", "items": { "type": "string" }, "description": "Alternate names users might map to (e.g. 'sh' for bash)." },
+    "extensions": { "type": "array", "items": { "type": "string" } },
+    "filenames":  { "type": "array", "items": { "type": "string" }, "description": "Exact filenames that imply this language (e.g. 'Dockerfile')." },
+
+    "dynamic_exec_sinks": {
+      "type": "array", "items": { "type": "string" },
+      "description": "Fully qualified callee names that execute their first non-literal argument. Matched as dotted paths after import/alias resolution."
+    },
+    "decoders": {
+      "type": "array", "items": { "type": "string" },
+      "description": "Functions that turn opaque bytes/strings back into executable text or bytecode (base64, hex, gunzip, decrypt, unmarshal)."
+    },
+    "deserializers": {
+      "type": "array", "items": { "type": "string" },
+      "description": "Functions that materialize attacker-controlled objects/code (pickle.loads, marshal.loads, Marshal.load, ObjectInputStream.readObject)."
+    },
+    "network_io": {
+      "type": "array", "items": { "type": "string" },
+      "description": "Outbound network primitives (HTTP fetch, sockets) — sources for network-then-execute flows."
+    },
+    "secrets_io": {
+      "type": "array", "items": { "type": "string" },
+      "description": "Reads of credentials, environment, keychains, browser stores."
+    },
+    "shell_exec": {
+      "type": "array", "items": { "type": "string" },
+      "description": "OS command execution primitives. Distinct from in-process eval sinks."
+    },
+    "library_load": {
+      "type": "array", "items": { "type": "string" },
+      "description": "In-memory or dynamic library/assembly loaders (Reflection.Assembly.Load, ctypes.CDLL, plugin.Open, dlopen)."
+    },
+
+    "obfuscator_id_patterns": {
+      "type": "array", "items": { "type": "string", "format": "regex" },
+      "description": "Regexes that match identifier names produced by common obfuscators in this language."
+    },
+    "min_mean_identifier_length": {
+      "type": "number", "default": 2.0,
+      "description": "Files whose mean identifier length falls below this threshold are flagged (after excluding minified paths)."
+    },
+    "obfuscator_id_min_ratio": {
+      "type": "number", "default": 0.2,
+      "description": "Ratio of obfuscator-pattern identifiers to total identifiers required to flag."
+    },
+
+    "string_concat_operators": {
+      "type": "array", "items": { "type": "string" },
+      "description": "Operator tokens used to concatenate strings; helps detect split sink names like 'ev'+'al'."
+    },
+
+    "language_specific_detectors": {
+      "type": "array", "items": { "type": "string" },
+      "description": "IDs of language-specific detectors to enable for this language (see detectors/lang-specific/)."
+    },
+
+    "manifests": {
+      "type": "array", "items": { "type": "string" },
+      "description": "Manifest detector IDs that apply to this ecosystem (e.g. 'package-json', 'setup-py')."
+    },
+
+    "notes": { "type": "string" }
+  }
+}

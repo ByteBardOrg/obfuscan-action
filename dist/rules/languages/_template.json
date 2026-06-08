@@ -1,0 +1,34 @@
+{
+  "id": "LANGUAGE_ID_HERE",
+  "aliases": [],
+  "extensions": [],
+  "filenames": [],
+
+  "dynamic_exec_sinks": [
+    "// Functions whose first non-literal argument is executed:",
+    "// e.g. eval, exec, Function, Invoke-Expression, etc."
+  ],
+  "decoders": [
+    "// Functions that decode opaque bytes/strings:",
+    "// e.g. base64.b64decode, atob, Buffer.from, Convert.FromBase64String"
+  ],
+  "deserializers": [
+    "// Functions that materialize attacker-controlled objects/code"
+  ],
+  "network_io": [],
+  "secrets_io": [],
+  "shell_exec": [],
+  "library_load": [],
+
+  "obfuscator_id_patterns": ["^_0x[a-f0-9]{4,}$"],
+  "min_mean_identifier_length": 2.0,
+  "obfuscator_id_min_ratio": 0.2,
+
+  "string_concat_operators": ["+"],
+
+  "language_specific_detectors": [],
+
+  "manifests": [],
+
+  "notes": "Replace LANGUAGE_ID_HERE with the tree-sitter grammar id. Only the lists you populate need to be non-empty; absent fields default to []. Strip the comments before saving as a real language file."
+}

@@ -1,0 +1,107 @@
+{
+  "id": "c_sharp",
+  "aliases": ["csharp", "cs", "dotnet"],
+  "extensions": [".cs", ".csx"],
+
+  "dynamic_exec_sinks": [
+    "System.Reflection.Assembly.Load",
+    "System.Reflection.Assembly.LoadFile",
+    "System.Reflection.Assembly.LoadFrom",
+    "System.Reflection.Assembly.LoadWithPartialName",
+    "System.Reflection.MethodInfo.Invoke",
+    "System.Reflection.ConstructorInfo.Invoke",
+    "System.Activator.CreateInstance",
+    "System.Activator.CreateInstanceFrom",
+    "Microsoft.CSharp.CSharpCodeProvider.CompileAssemblyFromSource",
+    "Microsoft.CSharp.CSharpCodeProvider.CompileAssemblyFromFile",
+    "System.CodeDom.Compiler.CodeDomProvider.CreateProvider",
+    "Microsoft.CodeAnalysis.CSharp.Scripting.CSharpScript.RunAsync",
+    "Microsoft.CodeAnalysis.CSharp.Scripting.CSharpScript.EvaluateAsync",
+    "System.Linq.Expressions.Expression.Lambda.Compile"
+  ],
+
+  "decoders": [
+    "System.Convert.FromBase64String",
+    "System.Convert.FromBase64CharArray",
+    "System.Text.Encoding.UTF8.GetString",
+    "System.Text.Encoding.Unicode.GetString",
+    "System.Text.Encoding.ASCII.GetString",
+    "System.IO.Compression.GZipStream",
+    "System.IO.Compression.DeflateStream",
+    "System.IO.Compression.BrotliStream",
+    "System.Security.Cryptography.Aes.Create",
+    "System.Security.Cryptography.RijndaelManaged",
+    "System.Security.Cryptography.SymmetricAlgorithm.CreateDecryptor",
+    "System.Web.HttpUtility.UrlDecode",
+    "System.Net.WebUtility.UrlDecode"
+  ],
+
+  "deserializers": [
+    "System.Runtime.Serialization.Formatters.Binary.BinaryFormatter.Deserialize",
+    "System.Runtime.Serialization.NetDataContractSerializer.Deserialize",
+    "System.Web.Script.Serialization.JavaScriptSerializer.Deserialize",
+    "Newtonsoft.Json.JsonConvert.DeserializeObject",
+    "System.Xml.Serialization.XmlSerializer.Deserialize",
+    "System.Web.UI.LosFormatter.Deserialize",
+    "System.Web.UI.ObjectStateFormatter.Deserialize",
+    "System.Resources.ResourceReader"
+  ],
+
+  "network_io": [
+    "System.Net.WebClient",
+    "System.Net.WebClient.DownloadString",
+    "System.Net.WebClient.DownloadFile",
+    "System.Net.WebClient.DownloadData",
+    "System.Net.Http.HttpClient",
+    "System.Net.Http.HttpClient.GetAsync",
+    "System.Net.Http.HttpClient.PostAsync",
+    "System.Net.Http.HttpClient.SendAsync",
+    "System.Net.HttpWebRequest.Create",
+    "System.Net.Sockets.TcpClient",
+    "System.Net.Sockets.Socket"
+  ],
+
+  "secrets_io": [
+    "System.Environment.GetEnvironmentVariable",
+    "System.Environment.GetEnvironmentVariables",
+    "System.Environment.UserName",
+    "System.Environment.MachineName",
+    "Microsoft.Win32.Registry.GetValue",
+    "Microsoft.Win32.RegistryKey.OpenSubKey"
+  ],
+
+  "shell_exec": [
+    "System.Diagnostics.Process.Start",
+    "System.Diagnostics.ProcessStartInfo"
+  ],
+
+  "library_load": [
+    "System.Reflection.Assembly.Load",
+    "System.Reflection.Assembly.LoadFile",
+    "System.Reflection.Assembly.LoadFrom",
+    "System.Runtime.InteropServices.NativeLibrary.Load",
+    "[DllImport]",
+    "kernel32.LoadLibrary",
+    "kernel32.LoadLibraryEx"
+  ],
+
+  "obfuscator_id_patterns": [
+    "^_[A-Za-z]?[0-9]+$",
+    "^[Il1O0]{4,}$"
+  ],
+  "min_mean_identifier_length": 2.5,
+  "obfuscator_id_min_ratio": 0.2,
+
+  "string_concat_operators": ["+", "$\""],
+
+  "language_specific_detectors": [
+    "csharp.assembly-load-bytes",
+    "csharp.dllimport-suspicious",
+    "csharp.binary-formatter-deprecated",
+    "csharp.msbuild-exec-task"
+  ],
+
+  "manifests": ["csproj", "nuget-config", "packages-config"],
+
+  "notes": "BinaryFormatter is on the .NET deprecation list specifically because it's a deserialization RCE primitive — flag any new use. In-memory Assembly.Load(byte[]) is the .NET equivalent of eval(decoded_blob)."
+}

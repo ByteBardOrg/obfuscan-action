@@ -1,0 +1,93 @@
+{
+  "id": "typescript",
+  "aliases": ["ts", "tsx"],
+  "extensions": [".ts", ".tsx", ".cts", ".mts"],
+
+  "dynamic_exec_sinks": [
+    "eval",
+    "Function",
+    "GeneratorFunction",
+    "AsyncFunction",
+    "Function.prototype.constructor",
+    "globalThis.eval",
+    "vm.runInThisContext",
+    "vm.runInNewContext",
+    "vm.runInContext",
+    "vm.compileFunction",
+    "vm.Script",
+    "setTimeout",
+    "setInterval",
+    "setImmediate",
+    "WebAssembly.compile",
+    "WebAssembly.instantiate"
+  ],
+
+  "decoders": [
+    "atob",
+    "Buffer.from",
+    "TextDecoder.prototype.decode",
+    "decodeURIComponent",
+    "decodeURI",
+    "unescape",
+    "zlib.gunzipSync",
+    "zlib.inflateSync",
+    "zlib.brotliDecompressSync",
+    "zlib.unzipSync",
+    "crypto.createDecipheriv",
+    "crypto.createDecipher",
+    "crypto.privateDecrypt",
+    "crypto.subtle.decrypt"
+  ],
+
+  "deserializers": ["JSON.parse", "v8.deserialize"],
+
+  "network_io": [
+    "fetch", "XMLHttpRequest",
+    "http.get", "http.request", "https.get", "https.request",
+    "net.connect", "tls.connect",
+    "axios", "axios.get", "axios.post", "axios.request",
+    "got", "node-fetch", "request",
+    "undici.fetch", "undici.request",
+    "WebSocket"
+  ],
+
+  "secrets_io": [
+    "process.env",
+    "os.userInfo",
+    "os.homedir",
+    "fs.readFileSync",
+    "fs.readFile",
+    "fs.promises.readFile"
+  ],
+
+  "shell_exec": [
+    "child_process.exec",
+    "child_process.execSync",
+    "child_process.execFile",
+    "child_process.execFileSync",
+    "child_process.spawn",
+    "child_process.spawnSync",
+    "child_process.fork"
+  ],
+
+  "library_load": ["process.dlopen", "require", "import"],
+
+  "obfuscator_id_patterns": [
+    "^_0x[a-f0-9]{4,}$",
+    "^[Oo0]{3,}$",
+    "^[Il1]{3,}$"
+  ],
+  "min_mean_identifier_length": 2.0,
+  "obfuscator_id_min_ratio": 0.2,
+
+  "string_concat_operators": ["+", "+=", "`"],
+
+  "language_specific_detectors": [
+    "javascript.string-array-decoder",
+    "javascript.require-from-network"
+  ],
+
+  "manifests": ["package-json", "package-lock-json", "yarn-lock", "pnpm-lock", "tsconfig", "npmrc"],
+
+  "notes": "Inherits the JS detector set; the tree-sitter typescript grammar is a superset of javascript."
+}

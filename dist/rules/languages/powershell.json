@@ -1,0 +1,124 @@
+{
+  "id": "powershell",
+  "aliases": ["ps1", "pwsh"],
+  "extensions": [".ps1", ".psm1", ".psd1", ".ps1xml"],
+
+  "dynamic_exec_sinks": [
+    "Invoke-Expression",
+    "IEX",
+    "Invoke-Command",
+    "ICM",
+    "Invoke-Item",
+    "&",
+    ".",
+    "ScriptBlock.Create",
+    "ScriptBlock.Invoke",
+    "ScriptBlock.InvokeReturnAsIs",
+    "ExecutionContext.InvokeCommand.InvokeScript",
+    "ExecutionContext.InvokeCommand.ExpandString",
+    "PowerShell.Create",
+    "PowerShell.AddScript",
+    "Add-Type",
+    "New-Object.System.CodeDom.Compiler.CodeDomProvider"
+  ],
+
+  "decoders": [
+    "[System.Convert]::FromBase64String",
+    "[Convert]::FromBase64String",
+    "[System.Text.Encoding]::UTF8.GetString",
+    "[System.Text.Encoding]::Unicode.GetString",
+    "[System.Text.Encoding]::ASCII.GetString",
+    "[System.Text.Encoding]::Default.GetString",
+    "[System.IO.Compression.GzipStream]",
+    "[System.IO.Compression.DeflateStream]",
+    "[System.Security.Cryptography.AesCryptoServiceProvider]",
+    "[System.Security.Cryptography.RijndaelManaged]",
+    "[System.Net.WebUtility]::UrlDecode",
+    "[System.Web.HttpUtility]::UrlDecode",
+    "[char[]]",
+    "-join"
+  ],
+
+  "deserializers": [
+    "[System.Management.Automation.PSSerializer]::Deserialize",
+    "Import-CliXml",
+    "ConvertFrom-Json",
+    "[System.Web.Script.Serialization.JavaScriptSerializer]"
+  ],
+
+  "network_io": [
+    "Invoke-WebRequest",
+    "IWR",
+    "Invoke-RestMethod",
+    "IRM",
+    "Start-BitsTransfer",
+    "Net.WebClient",
+    "System.Net.WebClient",
+    "DownloadString",
+    "DownloadFile",
+    "DownloadData",
+    "[System.Net.WebClient]",
+    "[Net.WebClient]",
+    "[System.Net.WebClient]::DownloadString",
+    "[System.Net.WebClient]::DownloadFile",
+    "[System.Net.WebClient]::DownloadData",
+    "[System.Net.Sockets.TcpClient]",
+    "[System.Net.Http.HttpClient]",
+    "Net.Sockets.TcpClient",
+    "Resolve-DnsName"
+  ],
+
+  "secrets_io": [
+    "$env:",
+    "Get-ChildItem.Env:",
+    "Get-Credential",
+    "Get-ItemProperty.HKLM:",
+    "Get-ItemProperty.HKCU:",
+    "[Environment]::GetFolderPath",
+    "[Environment]::UserName",
+    "[Environment]::MachineName"
+  ],
+
+  "shell_exec": [
+    "Start-Process",
+    "saps",
+    "cmd.exe",
+    "cmd /c",
+    "Invoke-CimMethod",
+    "Invoke-WmiMethod",
+    "[System.Diagnostics.Process]::Start"
+  ],
+
+  "library_load": [
+    "[System.Reflection.Assembly]::Load",
+    "[System.Reflection.Assembly]::LoadFile",
+    "[System.Reflection.Assembly]::LoadFrom",
+    "[System.Reflection.Assembly]::LoadWithPartialName",
+    "[Reflection.Assembly]::Load",
+    "Add-Type",
+    "Import-Module"
+  ],
+
+  "obfuscator_id_patterns": [
+    "^[Il1O0]{4,}$",
+    "^\\$[A-Za-z]?[0-9]{3,}$"
+  ],
+  "min_mean_identifier_length": 2.0,
+  "obfuscator_id_min_ratio": 0.25,
+
+  "string_concat_operators": ["+", "-f"],
+
+  "language_specific_detectors": [
+    "powershell.backtick-escape-identifier",
+    "powershell.encoded-command-flag",
+    "powershell.format-operator-sink",
+    "powershell.char-array-join",
+    "powershell.add-type-inline-csharp",
+    "powershell.reflection-assembly-load-bytes",
+    "powershell.iex-pipeline"
+  ],
+
+  "manifests": ["psd1-manifest"],
+
+  "notes": "PowerShell is the most heavily-obfuscated language in real-world droppers. The language-specific detectors here are non-optional: backtick-in-identifier, format-string sink reconstruction, and char-array joins defeat the generic FQN-based sink check by construction. Patterns informed by Daniel Bohannon's Invoke-Obfuscation taxonomy."
+}

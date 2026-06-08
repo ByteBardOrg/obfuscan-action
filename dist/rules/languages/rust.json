@@ -1,0 +1,83 @@
+{
+  "id": "rust",
+  "aliases": ["rs"],
+  "extensions": [".rs"],
+
+  "dynamic_exec_sinks": [
+    "libloading::Library::new",
+    "libloading::Library::get",
+    "libloading::Symbol",
+    "std::process::Command::new"
+  ],
+
+  "decoders": [
+    "base64::decode",
+    "base64::engine::general_purpose::STANDARD.decode",
+    "base64::engine::general_purpose::URL_SAFE.decode",
+    "hex::decode",
+    "flate2::read::GzDecoder::new",
+    "flate2::read::DeflateDecoder::new",
+    "lzma_rs::xz_decompress",
+    "aes::cipher::BlockDecrypt::decrypt"
+  ],
+
+  "deserializers": [
+    "serde_json::from_str",
+    "serde_json::from_slice",
+    "bincode::deserialize",
+    "rmp_serde::from_slice",
+    "serde_yaml::from_str"
+  ],
+
+  "network_io": [
+    "reqwest::get",
+    "reqwest::Client::get",
+    "reqwest::Client::post",
+    "reqwest::blocking::get",
+    "ureq::get",
+    "ureq::post",
+    "hyper::Client::get",
+    "std::net::TcpStream::connect",
+    "tokio::net::TcpStream::connect"
+  ],
+
+  "secrets_io": [
+    "std::env::var",
+    "std::env::vars",
+    "std::env::var_os",
+    "dirs::home_dir",
+    "dirs::config_dir"
+  ],
+
+  "shell_exec": [
+    "std::process::Command::new",
+    "std::process::Command::output",
+    "std::process::Command::spawn",
+    "std::process::Command::status"
+  ],
+
+  "library_load": [
+    "libloading::Library::new",
+    "libloading::os::unix::Library::new",
+    "libloading::os::windows::Library::new"
+  ],
+
+  "obfuscator_id_patterns": [
+    "^_[A-Za-z]?[0-9]+$"
+  ],
+  "min_mean_identifier_length": 2.5,
+  "obfuscator_id_min_ratio": 0.2,
+
+  "string_concat_operators": ["+", "format!"],
+
+  "language_specific_detectors": [
+    "rust.build-rs-presence",
+    "rust.unsafe-block-density",
+    "rust.proc-macro-crate-side-effects",
+    "rust.cargo-toml-build-deps"
+  ],
+
+  "manifests": ["cargo-toml", "cargo-lock"],
+
+  "notes": "Rust source-level obfuscation is rare; the threat model is build.rs and proc-macro crates running arbitrary code at build time. unsafe-block density can hint at FFI-based loaders. xz-class attacks would surface here."
+}

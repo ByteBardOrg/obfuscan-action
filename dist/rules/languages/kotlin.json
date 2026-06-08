@@ -1,0 +1,67 @@
+{
+  "id": "kotlin",
+  "aliases": ["kt"],
+  "extensions": [".kt", ".kts"],
+
+  "dynamic_exec_sinks": [
+    "kotlin.reflect.KCallable.call",
+    "kotlin.reflect.KCallable.callBy",
+    "kotlin.script.experimental.jvm.runScript",
+    "javax.script.ScriptEngine.eval",
+    "java.lang.reflect.Method.invoke",
+    "java.lang.Class.forName",
+    "java.lang.ClassLoader.defineClass"
+  ],
+
+  "decoders": [
+    "java.util.Base64.getDecoder",
+    "kotlin.io.encoding.Base64.decode",
+    "java.util.zip.GZIPInputStream",
+    "javax.crypto.Cipher.getInstance"
+  ],
+
+  "deserializers": [
+    "java.io.ObjectInputStream.readObject",
+    "kotlinx.serialization.json.Json.decodeFromString"
+  ],
+
+  "network_io": [
+    "java.net.URL.openConnection",
+    "java.net.URL.openStream",
+    "okhttp3.OkHttpClient",
+    "io.ktor.client.HttpClient"
+  ],
+
+  "secrets_io": [
+    "java.lang.System.getenv",
+    "java.lang.System.getProperty"
+  ],
+
+  "shell_exec": [
+    "java.lang.Runtime.exec",
+    "java.lang.ProcessBuilder.start"
+  ],
+
+  "library_load": [
+    "java.lang.System.load",
+    "java.lang.System.loadLibrary"
+  ],
+
+  "obfuscator_id_patterns": [
+    "^_[A-Za-z]?[0-9]+$",
+    "^[Il1O0]{4,}$"
+  ],
+  "min_mean_identifier_length": 3.0,
+  "obfuscator_id_min_ratio": 0.3,
+
+  "string_concat_operators": ["+", "$"],
+
+  "language_specific_detectors": [
+    "kotlin.script-eval",
+    "kotlin.gradle-kts-imperative"
+  ],
+
+  "manifests": ["build-gradle", "build-gradle-kts", "settings-gradle"],
+
+  "notes": "Kotlin shares the JVM attack surface with Java; the script flavor (.kts, especially Gradle build scripts) is itself an execution context worth flagging when it gains new imports or shell-out calls."
+}

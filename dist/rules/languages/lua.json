@@ -1,0 +1,66 @@
+{
+  "id": "lua",
+  "aliases": [],
+  "extensions": [".lua"],
+
+  "dynamic_exec_sinks": [
+    "load",
+    "loadstring",
+    "loadfile",
+    "dofile",
+    "assert",
+    "rawget",
+    "string.dump"
+  ],
+
+  "decoders": [
+    "string.char",
+    "string.byte",
+    "string.gsub",
+    "string.format"
+  ],
+
+  "deserializers": [],
+
+  "network_io": [
+    "socket.connect",
+    "socket.tcp",
+    "socket.http.request",
+    "http.request",
+    "https.request",
+    "ngx.location.capture"
+  ],
+
+  "secrets_io": [
+    "os.getenv",
+    "os.tmpname"
+  ],
+
+  "shell_exec": [
+    "os.execute",
+    "io.popen"
+  ],
+
+  "library_load": [
+    "package.loadlib",
+    "require"
+  ],
+
+  "obfuscator_id_patterns": [
+    "^_[A-Za-z]?[0-9]+$",
+    "^[Il1O0]{4,}$"
+  ],
+  "min_mean_identifier_length": 2.0,
+  "obfuscator_id_min_ratio": 0.3,
+
+  "string_concat_operators": [".."],
+
+  "language_specific_detectors": [
+    "lua.loadstring-from-decoder",
+    "lua.string-char-payload"
+  ],
+
+  "manifests": ["luarocks-rockspec"],
+
+  "notes": "Lua is heavily used in game cheats, embedded malware, and OpenResty/nginx scripting. loadstring(payload)() with a decoded payload is the canonical pattern. string.char(...) payloads encode bytes as decimal triples and are common in obfuscated cheat scripts."
+}

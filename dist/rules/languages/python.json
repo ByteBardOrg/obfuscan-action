@@ -1,0 +1,159 @@
+{
+  "id": "python",
+  "aliases": ["py", "python3"],
+  "extensions": [".py", ".pyi", ".pyw"],
+
+  "dynamic_exec_sinks": [
+    "eval",
+    "exec",
+    "compile",
+    "execfile",
+    "__import__",
+    "importlib.import_module",
+    "importlib.util.spec_from_file_location",
+    "importlib.util.module_from_spec",
+    "types.FunctionType",
+    "types.CodeType",
+    "code.InteractiveInterpreter.runsource",
+    "code.compile_command",
+    "ast.parse",
+    "py_compile.compile",
+    "timeit.timeit",
+    "timeit.repeat",
+    "builtins.eval",
+    "builtins.exec",
+    "builtins.compile",
+    "builtins.__import__"
+  ],
+
+  "decoders": [
+    "base64.b64decode",
+    "base64.b32decode",
+    "base64.b16decode",
+    "base64.urlsafe_b64decode",
+    "base64.a85decode",
+    "base64.b85decode",
+    "base64.standard_b64decode",
+    "binascii.a2b_base64",
+    "binascii.a2b_hex",
+    "binascii.unhexlify",
+    "codecs.decode",
+    "codecs.escape_decode",
+    "bytes.fromhex",
+    "bytearray.fromhex",
+    "zlib.decompress",
+    "gzip.decompress",
+    "bz2.decompress",
+    "lzma.decompress",
+    "lz4.frame.decompress",
+    "Crypto.Cipher.AES.new",
+    "cryptography.fernet.Fernet.decrypt",
+    "cryptography.hazmat.primitives.ciphers.Cipher",
+    "urllib.parse.unquote",
+    "urllib.parse.unquote_plus",
+    "html.unescape"
+  ],
+
+  "deserializers": [
+    "pickle.loads",
+    "pickle.load",
+    "cPickle.loads",
+    "cPickle.load",
+    "_pickle.loads",
+    "marshal.loads",
+    "marshal.load",
+    "shelve.open",
+    "dill.loads",
+    "dill.load",
+    "yaml.load",
+    "yaml.unsafe_load",
+    "yaml.full_load",
+    "jsonpickle.decode"
+  ],
+
+  "network_io": [
+    "urllib.request.urlopen",
+    "urllib.request.Request",
+    "urllib.request.urlretrieve",
+    "urllib.urlopen",
+    "urllib2.urlopen",
+    "requests.get", "requests.post", "requests.put", "requests.delete",
+    "requests.request", "requests.Session.send",
+    "httpx.get", "httpx.post", "httpx.request",
+    "aiohttp.ClientSession.get", "aiohttp.ClientSession.post",
+    "http.client.HTTPConnection",
+    "http.client.HTTPSConnection",
+    "socket.socket",
+    "socket.create_connection",
+    "ftplib.FTP",
+    "telnetlib.Telnet",
+    "ssl.create_default_context"
+  ],
+
+  "secrets_io": [
+    "os.environ",
+    "os.environ.get",
+    "os.getenv",
+    "os.path.expanduser",
+    "pathlib.Path.home",
+    "keyring.get_password",
+    "configparser.ConfigParser.read",
+    "platform.uname",
+    "platform.node",
+    "getpass.getuser"
+  ],
+
+  "shell_exec": [
+    "os.system",
+    "os.popen",
+    "os.spawnl", "os.spawnle", "os.spawnlp", "os.spawnlpe",
+    "os.spawnv", "os.spawnve", "os.spawnvp", "os.spawnvpe",
+    "os.execl", "os.execle", "os.execlp", "os.execlpe",
+    "os.execv", "os.execve", "os.execvp", "os.execvpe",
+    "subprocess.run",
+    "subprocess.call",
+    "subprocess.check_call",
+    "subprocess.check_output",
+    "subprocess.Popen",
+    "subprocess.getoutput",
+    "subprocess.getstatusoutput",
+    "commands.getoutput",
+    "commands.getstatusoutput",
+    "pty.spawn"
+  ],
+
+  "library_load": [
+    "importlib.import_module",
+    "importlib.__import__",
+    "__import__",
+    "ctypes.CDLL",
+    "ctypes.cdll.LoadLibrary",
+    "ctypes.WinDLL",
+    "ctypes.windll.LoadLibrary",
+    "ctypes.OleDLL",
+    "ctypes.PyDLL",
+    "ctypes.pydll.LoadLibrary"
+  ],
+
+  "obfuscator_id_patterns": [
+    "^_+[A-Za-z]?[0-9]+_+$",
+    "^[Il1]{4,}$",
+    "^[Oo0]{4,}$",
+    "^__[A-Za-z]{1,3}__$"
+  ],
+  "min_mean_identifier_length": 2.5,
+  "obfuscator_id_min_ratio": 0.2,
+
+  "string_concat_operators": ["+", "%", "*"],
+
+  "language_specific_detectors": [
+    "python.setup-py-top-level",
+    "python.cmdclass-override",
+    "python.getattr-string-split",
+    "python.pickle-loads-untrusted"
+  ],
+
+  "manifests": ["setup-py", "setup-cfg", "pyproject-toml", "requirements-txt", "pip-conf"],
+
+  "notes": "Python supply-chain attacks heavily abuse setup.py top-level execution and pickle/marshal deserialization. The getattr(__builtins__, 'ev'+'al') trick is its own detector because string-concat sink names defeat the generic FQN check."
+}

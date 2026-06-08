@@ -1,0 +1,97 @@
+{
+  "id": "go",
+  "aliases": ["golang"],
+  "extensions": [".go"],
+
+  "dynamic_exec_sinks": [
+    "plugin.Open",
+    "plugin.Plugin.Lookup",
+    "reflect.Value.Call",
+    "reflect.Value.CallSlice",
+    "reflect.MakeFunc",
+    "text/template.Template.Parse",
+    "text/template.Template.Execute",
+    "html/template.Template.Parse",
+    "go/parser.ParseFile",
+    "go/build.Import"
+  ],
+
+  "decoders": [
+    "encoding/base64.StdEncoding.DecodeString",
+    "encoding/base64.RawStdEncoding.DecodeString",
+    "encoding/base64.URLEncoding.DecodeString",
+    "encoding/base64.RawURLEncoding.DecodeString",
+    "encoding/hex.DecodeString",
+    "compress/gzip.NewReader",
+    "compress/zlib.NewReader",
+    "compress/flate.NewReader",
+    "compress/bzip2.NewReader",
+    "crypto/aes.NewCipher",
+    "crypto/cipher.NewCBCDecrypter",
+    "crypto/cipher.NewGCM"
+  ],
+
+  "deserializers": [
+    "encoding/gob.NewDecoder",
+    "encoding/gob.Decoder.Decode",
+    "encoding/json.Unmarshal",
+    "encoding/xml.Unmarshal",
+    "gopkg.in/yaml.v2.Unmarshal",
+    "gopkg.in/yaml.v3.Unmarshal"
+  ],
+
+  "network_io": [
+    "net/http.Get",
+    "net/http.Post",
+    "net/http.Head",
+    "net/http.Client.Do",
+    "net/http.NewRequest",
+    "net.Dial",
+    "net.DialTimeout",
+    "net.Listen",
+    "crypto/tls.Dial"
+  ],
+
+  "secrets_io": [
+    "os.Environ",
+    "os.Getenv",
+    "os.LookupEnv",
+    "os.UserHomeDir",
+    "os.UserConfigDir",
+    "user.Current"
+  ],
+
+  "shell_exec": [
+    "os/exec.Command",
+    "os/exec.CommandContext",
+    "os/exec.LookPath",
+    "syscall.Exec",
+    "syscall.ForkExec",
+    "syscall.StartProcess"
+  ],
+
+  "library_load": [
+    "plugin.Open",
+    "syscall.LoadLibrary",
+    "syscall.LoadDLL",
+    "C.dlopen"
+  ],
+
+  "obfuscator_id_patterns": [
+    "^_[A-Za-z]?[0-9]+$"
+  ],
+  "min_mean_identifier_length": 2.5,
+  "obfuscator_id_min_ratio": 0.2,
+
+  "string_concat_operators": ["+"],
+
+  "language_specific_detectors": [
+    "go.go-generate-shell-out",
+    "go.cgo-import-darwin",
+    "go.init-function-side-effects"
+  ],
+
+  "manifests": ["go-mod", "go-sum"],
+
+  "notes": "Go is rarely the language of obfuscated payloads but is targeted via build-time hooks: //go:generate directives that shell out, init() functions with side effects, and cgo imports that pull in arbitrary C. Plugin loading via plugin.Open is the in-process dynamic-execution surface."
+}

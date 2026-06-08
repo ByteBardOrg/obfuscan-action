@@ -1,0 +1,58 @@
+name: obfuscan
+description: Detect obfuscated code and likely backdoors in pull-request diffs.
+author: ByteBardOrg
+
+inputs:
+  github-token:
+    description: GitHub token used to read diffs and write pull request comments.
+    required: false
+    default: ${{ github.token }}
+  fail-on:
+    description: Severity that fails the workflow. One of block, warn, never.
+    required: false
+    default: block
+  min-severity:
+    description: Minimum severity to report. One of info, warn, block.
+    required: false
+    default: info
+  comment:
+    description: Whether to create or update a pull request comment.
+    required: false
+    default: "true"
+  max-findings:
+    description: Maximum number of findings shown in the Markdown report.
+    required: false
+    default: "50"
+  allowlist-path:
+    description: Workspace-relative allowlist path.
+    required: false
+    default: .obfuscan/allowlist.json
+  disabled-detectors:
+    description: Comma or newline separated detector ids to disable.
+    required: false
+    default: ""
+  file-timeout-ms:
+    description: Optional per-file detector timeout in milliseconds.
+    required: false
+    default: ""
+
+outputs:
+  findings-total:
+    description: Total number of findings.
+  findings-block:
+    description: Number of block findings.
+  findings-warn:
+    description: Number of warn findings.
+  findings-info:
+    description: Number of info findings.
+  conclusion:
+    description: pass or fail.
+
+runs:
+  using: node20
+  main: dist/index.js
+
+branding:
+  icon: shield
+  color: purple
+

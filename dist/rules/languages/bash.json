@@ -1,0 +1,105 @@
+{
+  "id": "bash",
+  "aliases": ["sh", "shell", "zsh", "ksh"],
+  "extensions": [".sh", ".bash", ".zsh", ".ksh"],
+  "filenames": [".bashrc", ".bash_profile", ".zshrc", ".profile"],
+
+  "dynamic_exec_sinks": [
+    "eval",
+    "source",
+    ".",
+    "exec",
+    "trap",
+    "command_eval"
+  ],
+
+  "decoders": [
+    "base64",
+    "base64 -d",
+    "base64 --decode",
+    "openssl base64 -d",
+    "openssl enc -d",
+    "xxd -r",
+    "xxd -r -p",
+    "od -An",
+    "uudecode",
+    "gunzip",
+    "zcat",
+    "bunzip2",
+    "unxz",
+    "tr",
+    "rev",
+    "printf"
+  ],
+
+  "deserializers": [],
+
+  "network_io": [
+    "curl",
+    "wget",
+    "fetch",
+    "nc",
+    "netcat",
+    "ncat",
+    "telnet",
+    "ssh",
+    "scp",
+    "sftp",
+    "rsync",
+    "ftp",
+    "http",
+    "https"
+  ],
+
+  "secrets_io": [
+    "printenv",
+    "env",
+    "set",
+    "$HOME",
+    "~/.aws/credentials",
+    "~/.ssh/id_rsa",
+    "~/.ssh/id_ed25519",
+    "~/.netrc",
+    "~/.npmrc",
+    "~/.pypirc",
+    "~/.docker/config.json",
+    "/etc/passwd",
+    "/etc/shadow"
+  ],
+
+  "shell_exec": [
+    "$()",
+    "``",
+    "system",
+    "sudo",
+    "su"
+  ],
+
+  "library_load": [
+    "LD_PRELOAD",
+    "LD_LIBRARY_PATH"
+  ],
+
+  "obfuscator_id_patterns": [
+    "^_[A-Za-z]?[0-9]+$",
+    "^[Il1O0]{4,}$"
+  ],
+  "min_mean_identifier_length": 1.5,
+  "obfuscator_id_min_ratio": 0.3,
+
+  "string_concat_operators": [],
+
+  "language_specific_detectors": [
+    "bash.curl-pipe-shell",
+    "bash.indirect-expansion",
+    "bash.here-string-decoder",
+    "bash.printf-hex-payload",
+    "bash.process-substitution-exec",
+    "bash.history-disable",
+    "bash.LD_PRELOAD-injection"
+  ],
+
+  "manifests": [],
+
+  "notes": "The single most dangerous bash pattern is `curl X | sh` and its variants (`bash <(curl X)`, `eval \"$(curl X)\"`). These are caught by language-specific regex detectors because tree-sitter-bash represents pipelines and process-substitution as distinct node shapes. Indirect expansion `${!var}` is bash-specific and worth its own rule."
+}

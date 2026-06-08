@@ -1,0 +1,93 @@
+{
+  "id": "java",
+  "aliases": [],
+  "extensions": [".java"],
+
+  "dynamic_exec_sinks": [
+    "java.lang.reflect.Method.invoke",
+    "java.lang.reflect.Constructor.newInstance",
+    "java.lang.Class.forName",
+    "java.lang.Class.newInstance",
+    "java.lang.ClassLoader.defineClass",
+    "java.lang.ClassLoader.loadClass",
+    "java.lang.invoke.MethodHandle.invoke",
+    "java.lang.invoke.MethodHandle.invokeExact",
+    "javax.script.ScriptEngine.eval",
+    "javax.script.ScriptEngineManager",
+    "groovy.lang.GroovyShell.evaluate",
+    "groovy.lang.GroovyClassLoader.parseClass",
+    "javax.tools.JavaCompiler.run",
+    "javax.tools.ToolProvider.getSystemJavaCompiler"
+  ],
+
+  "decoders": [
+    "java.util.Base64.getDecoder",
+    "java.util.Base64.getUrlDecoder",
+    "java.util.Base64.getMimeDecoder",
+    "javax.xml.bind.DatatypeConverter.parseBase64Binary",
+    "javax.xml.bind.DatatypeConverter.parseHexBinary",
+    "java.util.zip.GZIPInputStream",
+    "java.util.zip.InflaterInputStream",
+    "javax.crypto.Cipher.getInstance",
+    "javax.crypto.Cipher.doFinal"
+  ],
+
+  "deserializers": [
+    "java.io.ObjectInputStream.readObject",
+    "java.io.ObjectInputStream.readUnshared",
+    "com.thoughtworks.xstream.XStream.fromXML",
+    "org.yaml.snakeyaml.Yaml.load",
+    "com.fasterxml.jackson.databind.ObjectMapper.readValue"
+  ],
+
+  "network_io": [
+    "java.net.URL.openConnection",
+    "java.net.URL.openStream",
+    "java.net.HttpURLConnection",
+    "java.net.Socket",
+    "java.net.ServerSocket",
+    "java.net.http.HttpClient.send",
+    "okhttp3.OkHttpClient",
+    "org.apache.http.client.HttpClient.execute"
+  ],
+
+  "secrets_io": [
+    "java.lang.System.getenv",
+    "java.lang.System.getProperty",
+    "java.lang.System.getProperties"
+  ],
+
+  "shell_exec": [
+    "java.lang.Runtime.exec",
+    "java.lang.ProcessBuilder.start",
+    "java.lang.ProcessBuilder"
+  ],
+
+  "library_load": [
+    "java.lang.System.load",
+    "java.lang.System.loadLibrary",
+    "java.lang.Runtime.load",
+    "java.lang.Runtime.loadLibrary"
+  ],
+
+  "obfuscator_id_patterns": [
+    "^_[A-Za-z]?[0-9]+$",
+    "^[Il1O0]{4,}$",
+    "^[a-z]{1,2}[0-9]{2,}$"
+  ],
+  "min_mean_identifier_length": 3.0,
+  "obfuscator_id_min_ratio": 0.3,
+
+  "string_concat_operators": ["+"],
+
+  "language_specific_detectors": [
+    "java.classloader-define-class-bytes",
+    "java.scripting-engine-eval",
+    "java.runtime-exec-string-array",
+    "java.objectinputstream-untrusted"
+  ],
+
+  "manifests": ["pom-xml", "build-gradle", "build-gradle-kts"],
+
+  "notes": "ProGuard/R8-style obfuscation produces short identifiers in distributed jars; flag in source repos, not in /libs/. Class.forName + newInstance + reflection is a common malware trampoline."
+}
